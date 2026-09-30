@@ -1,0 +1,17 @@
+# Standalone package (it lives inside the Limen repo tree but is its own module).
+[workspace]
+
+[package]
+name = "net-mapper"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "net_mapper"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+limen-sdk-rust = { git = "https://github.com/CRC-BARRACUDA/Limen.git" }
+rusqlite = { version = "0.31.0", features = ["bundled"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"

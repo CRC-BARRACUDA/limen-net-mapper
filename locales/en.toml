@@ -1,0 +1,36 @@
+[ui]
+title = "Network Topology"
+subtitle = "Map the network structure by gathering ARP, routes, and connections from this machine."
+scan = "Scan this machine"
+map = "Show the map"
+back = "Back"
+stats_total = "Nodes in DB: {n}"
+stats_routers = "Routers: {r} | Servers: {s}"
+
+[scan]
+title = "Network Scanning"
+in_progress = "Reading the neighbour table and the routes…"
+hint = "This may take up to 30 seconds. The module is analyzing traceroutes to discover hidden routers."
+
+[map]
+title = "Network map"
+empty = "Nothing mapped yet — scan first."
+
+[field]
+key_router = "Router / gateway"
+key_server = "Server"
+key_switch = "Switch"
+key_pc = "Workstation"
+key_unknown = "Unknown"
+th_host = "Host"
+th_ip = "Address"
+th_mac = "Hardware address"
+th_kind = "Kind"
+behind = "Behind"
+
+[host]
+field = "Field"
+value = "Value"
+what = "What the last scan saw. Scan again to refresh it."
+unknown_title = "Unknown host"
+unknown = "This host is no longer in the map — scan again."

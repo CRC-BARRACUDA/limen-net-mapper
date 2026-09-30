@@ -1,0 +1,11 @@
+/target
+/dist
+Cargo.lock
+# Built/loaded native library — never committed to source.
+*.so
+*.dll
+*.dylib
+# What a scan found on the machine this was run on: somebody else's network,
+# written here by the module itself. It belongs to the run, not to the source.
+topology.db
+topology_map.html

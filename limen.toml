@@ -1,0 +1,28 @@
+[module]
+name = "net-mapper"
+display_name = "Network Topology Mapper"
+version = "0.1.0"
+language = "native"
+entry = "net_mapper"
+abi = "native"
+authors = ["Limen"]
+tags = ["network", "inventory", "topology"]
+
+[provides]
+capabilities = ["network.map"]
+
+[permissions]
+# Windows and macOS read the neighbour table through a command — PowerShell's
+# `Get-NetNeighbor`, or `arp`/`netstat`. Linux reads /proc and spawns nothing;
+# the permission is declared once for the module rather than per platform,
+# because that is what the user is asked to agree to.
+subprocess = true
+
+# Deliberately NOT here:
+#
+#   network — nothing is sent. Every platform reads a table the kernel already
+#     has, which is what makes this safe to run on a network you are only
+#     looking at: a scan that probes announces the machine doing the scanning.
+#
+#   elevate — the neighbour table is readable by an ordinary user on all three
+#     platforms. This was declared before anything asked for it.
