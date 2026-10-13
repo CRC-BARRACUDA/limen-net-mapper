@@ -13,11 +13,13 @@
 mod bsd;
 #[cfg_attr(not(target_os = "windows"), allow(dead_code))]
 mod windows_lines;
+#[cfg_attr(not(target_os = "windows"), allow(dead_code))]
+mod windows_self;
 
 #[cfg(target_os = "windows")]
 mod windows;
 #[cfg(target_os = "windows")]
-pub use windows::run_deep_scan;
+pub use windows::{interfaces, run_deep_scan, this_machine};
 
 #[cfg(target_os = "linux")]
 mod linux;
@@ -48,7 +50,7 @@ pub struct Iface {
 }
 
 /// Every network this machine is on.
-#[cfg(not(target_os = "linux"))]
+#[cfg(not(any(target_os = "linux", target_os = "windows")))]
 pub fn interfaces() -> Vec<Iface> {
     Vec::new()
 }
@@ -64,12 +66,13 @@ pub fn now() -> i64 {
 
 /// This machine itself, which no neighbour table contains.
 ///
-/// Read from the routing table on Linux. Not yet written for Windows or macOS:
-/// each keeps the same facts somewhere else, and a parser written against
-/// output nobody here can run is a parser nobody has tested. Those platforms
-/// show the map as they always did — their neighbours, without themselves —
-/// rather than a guess at where this machine is.
-#[cfg(not(target_os = "linux"))]
+/// Read from the routing table on Linux and from the adapter list on
+/// Windows. Not yet written for macOS: it keeps the same facts somewhere
+/// else again, and a parser written against output nobody here can run is a
+/// parser nobody has tested. That platform shows the map as it always did —
+/// its neighbours, without itself — rather than a guess at where this
+/// machine is.
+#[cfg(not(any(target_os = "linux", target_os = "windows")))]
 pub fn this_machine() -> Option<crate::model::Node> {
     None
 }
