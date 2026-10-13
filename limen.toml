@@ -12,6 +12,23 @@ tags = ["network", "inventory", "topology"]
 capabilities = ["network.map"]
 
 [permissions]
+# Finding hosts sends. One empty UDP datagram to every address on every network
+# this machine is attached to, so that machines which have been quiet answer and
+# can be read out of the neighbour table like any other.
+#
+# Reading the table — the other button, and the default — still sends nothing.
+# The permission is asked for because of the one that does, and on a network
+# under investigation that button is this machine announcing itself to every
+# address on it: a decision, which is why it asks before it runs.
+#
+# Nothing is received and nothing is connected to: no port is examined, no
+# service is spoken to, and the datagram is addressed to discard (port 9).
+#
+# The entry is a list of what may be reached, like every other module's. This
+# one does not reach out to the internet at all: what it touches is whatever is
+# on the networks this machine is already plugged into, which is only known
+# once the machine is running.
+network = ["<attached-networks>"]
 # Windows and macOS read the neighbour table through a command — PowerShell's
 # `Get-NetNeighbor`, or `arp`/`netstat`. Linux reads /proc and spawns nothing;
 # the permission is declared once for the module rather than per platform,
@@ -20,9 +37,6 @@ subprocess = true
 
 # Deliberately NOT here:
 #
-#   network — nothing is sent. Every platform reads a table the kernel already
-#     has, which is what makes this safe to run on a network you are only
-#     looking at: a scan that probes announces the machine doing the scanning.
-#
 #   elevate — the neighbour table is readable by an ordinary user on all three
-#     platforms. This was declared before anything asked for it.
+#     platforms, and the probe is an ordinary datagram. Nothing here needs more
+#     rights than whoever started it has.

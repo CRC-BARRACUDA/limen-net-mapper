@@ -24,7 +24,7 @@ pub(crate) fn parse(stdout: &str, gateways: &[String]) -> Vec<Node> {
         }
         nodes.push(Node {
             mac,
-            ip: ip.to_string(),
+            ips: vec![ip.to_string()],
             hostname: (name != "Unknown" && !name.is_empty()).then(|| name.to_string()),
             // The way off this network, named by the routing table rather than
             // guessed from an address ending in .1 or .254 — plenty of networks
@@ -36,9 +36,14 @@ pub(crate) fn parse(stdout: &str, gateways: &[String]) -> Vec<Node> {
                 DeviceType::PC
             },
             parent_mac: None,
+            macs: Vec::new(),
+            iface: None,
+            local_ips: Vec::new(),
+            local_mac: None,
+            last_seen: None,
         });
     }
-    nodes.sort_by_key(|n| sortable(&n.ip));
+    nodes.sort_by_key(|n| sortable(n.ip()));
     nodes
 }
 
@@ -86,7 +91,7 @@ Network Destination        Netmask          Gateway       Interface  Metric
     #[test]
     fn the_scripts_lines_read_as_neighbours() {
         let nodes = parse(LINES, &parse_gateways(ROUTES));
-        let ips: Vec<&str> = nodes.iter().map(|n| n.ip.as_str()).collect();
+        let ips: Vec<&str> = nodes.iter().map(|n| n.ip()).collect();
         // The unresolved entry and the line that is not one are not machines.
         assert_eq!(ips, vec!["10.0.1.1", "10.0.1.9", "10.0.1.15"], "{ips:?}");
 

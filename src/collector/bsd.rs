@@ -37,7 +37,7 @@ pub(crate) fn parse(arp: &str, gateways: &[String]) -> Vec<Node> {
         }
         nodes.push(Node {
             mac,
-            ip: ip.to_string(),
+            ips: vec![ip.to_string()],
             hostname: name_in_line(line),
             device_type: if gateways.contains(&ip.to_string()) {
                 DeviceType::Router
@@ -45,10 +45,15 @@ pub(crate) fn parse(arp: &str, gateways: &[String]) -> Vec<Node> {
                 DeviceType::PC
             },
             parent_mac: None,
+            macs: Vec::new(),
+            iface: None,
+            local_ips: Vec::new(),
+            local_mac: None,
+            last_seen: None,
         });
     }
-    nodes.sort_by_key(|n| sortable(&n.ip));
-    nodes.dedup_by(|a, b| a.mac == b.mac && a.ip == b.ip);
+    nodes.sort_by_key(|n| sortable(n.ip()));
+    nodes.dedup_by(|a, b| a.mac == b.mac && a.ip() == b.ip());
     nodes
 }
 
@@ -142,7 +147,7 @@ default            link#14            UCSI         utun3
     #[test]
     fn arp_output_reads_as_neighbours() {
         let nodes = parse(ARP, &parse_gateways(ROUTES));
-        let ips: Vec<&str> = nodes.iter().map(|n| n.ip.as_str()).collect();
+        let ips: Vec<&str> = nodes.iter().map(|n| n.ip()).collect();
         // The incomplete entry, the multicast one and the broadcast one are
         // not machines that answered.
         assert_eq!(ips, vec!["10.0.1.1", "10.0.1.15"], "{ips:?}");

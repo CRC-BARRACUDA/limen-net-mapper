@@ -1,15 +1,31 @@
 [ui]
 title = "Network Topology"
 subtitle = "Map the network structure by gathering ARP, routes, and connections from this machine."
-scan = "Scan this machine"
+scan = "Read the neighbour table"
+discover = "Find hosts…"
+discover_title = "Knock on every address?"
+discover_what = "a packet to every address on every network this machine is attached to"
+discover_yes = "Knock"
+discover_no = "Don't"
+discover_help = "Reading sends nothing — it is what this machine has already spoken to. Finding hosts sends one empty packet to every address on every attached network, so that machines that have been quiet answer and can be seen. On a network under investigation, that is this machine announcing itself: it is a decision, not a refresh."
+swept = "Asked {n} addresses."
+swept_skipped = " {n} networks were too large to walk."
+virtual = "  (virtual)"
 map = "Show the map"
 back = "Back"
+this_machine = "This machine"
+card = "{iface} · {ip} · {mac}"
+no_address = "no address"
+the_way_out = "  ← the way out"
+down = "  (down)"
 stats_total = "Nodes in DB: {n}"
 stats_routers = "Routers: {r} | Servers: {s}"
 
 [scan]
 title = "Network Scanning"
 in_progress = "Reading the neighbour table and the routes…"
+sweeping = "Knocking on every address…"
+sweeping_hint = "One empty packet per address, then the neighbour table is read for whoever answered."
 hint = "This may take up to 30 seconds. The module is analyzing traceroutes to discover hidden routers."
 
 [map]
@@ -21,12 +37,37 @@ key_router = "Router / gateway"
 key_server = "Server"
 key_switch = "Switch"
 key_pc = "Workstation"
+key_self = "This machine"
 key_unknown = "Unknown"
 th_host = "Host"
 th_ip = "Address"
 th_mac = "Hardware address"
 th_kind = "Kind"
+th_iface = "Interface"
+seen_from = "Seen from"
+last_seen = "Last seen"
 behind = "Behind"
+also = "Other addresses"
+
+# What a line on the map says when the pointer is on it.
+# Carrying the map off this machine, and being rid of it.
+[db]
+save = "Save the map…"
+saved = "Saved {n} machines to {path}"
+save_cancelled = "Not saved — no file was chosen."
+empty = "There is nothing in the map to save yet. Read the neighbour table first."
+clear = "Forget the map"
+clear_title = "Forget every machine seen?"
+clear_what = "every machine this module has recorded, on every network it has been on"
+clear_yes = "Forget them"
+clear_no = "Keep them"
+cleared = "Forgot {n} machines."
+nowhere = "This module has nowhere to keep a map."
+failed = "Could not do it: {why}"
+
+[link]
+this_end = "This end"
+that_end = "That end"
 
 [host]
 field = "Field"

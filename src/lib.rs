@@ -1,5 +1,6 @@
 mod collector;
 mod db;
+mod discover;
 mod handler;
 mod model;
 mod view;
@@ -8,6 +9,10 @@ pub(crate) use handler::*;
 pub(crate) use limen_sdk_rust::ui::{button, label, row, separator, step, window, window_modal_sized};
 pub(crate) use limen_sdk_rust::{json, rpc, Catalog, Handler, Host, RpcError, Value};
 use limen_sdk_rust::export_module;
+
+/// The id this machine goes by on its own map: one node, whatever it is
+/// called and however many cards it has.
+pub(crate) const SELF: &str = "self";
 
 pub(crate) const CAP: &str = "network.map";
 
